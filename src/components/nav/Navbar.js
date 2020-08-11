@@ -11,9 +11,6 @@ import { makeStyles } from "@material-ui/core/styles";
 
 export default function Navbar() {
   const useStyles = makeStyles((theme) => ({
-    link: {
-      display: "flex",
-    },
     icon: {
       marginRight: theme.spacing(0.5),
       width: 20,

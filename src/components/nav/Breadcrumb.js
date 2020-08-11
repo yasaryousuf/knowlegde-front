@@ -1,10 +1,8 @@
 import React from "react";
 import { Breadcrumbs, Link, Typography } from "@material-ui/core";
-import {
-  NavigateNextIcon,
-  HomeIcon,
-  QuestionAnswerIcon,
-} from "@material-ui/icons";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import HomeIcon from "@material-ui/icons/Home";
+import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import { makeStyles } from "@material-ui/core/styles";
 
 export default function Breadcrumb() {
