@@ -42,6 +42,7 @@ export default function Create() {
     root: {
       minWidth: 275,
       flexGrow: 1,
+      padding: "20px",
     },
     bullet: {
       display: "inline-block",
@@ -68,42 +69,58 @@ export default function Create() {
       <Container maxWidth="lg">
         <Grid container spacing={3}>
           <Grid item xs={8}>
-            <Card className={classes.root}>
+            <Card className={classes.root} elevation={3}>
               <CardContent>
-                <TextField
-                  id="standard-full-width"
-                  label="Question"
-                  placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
-                  helperText="Be specific and imagine you’re asking a question to another person"
-                  fullWidth
-                  margin="normal"
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <CKEditor
-                  editor={ClassicEditor}
-                  data="<p>Include all the information someone would need to answer your question</p>"
-                  onInit={(editor) => {
-                    console.log("Editor is ready to use!", editor);
-                  }}
-                  onChange={(event, editor) => {
-                    const data = editor.getData();
-                    console.log({ event, editor, data });
-                  }}
-                  onBlur={(event, editor) => {
-                    console.log("Blur.", editor);
-                  }}
-                  onFocus={(event, editor) => {
-                    console.log("Focus.", editor);
-                  }}
-                />
-                <ChipInput
-                  defaultValue={["foo", "bar"]}
-                  fullWidth={true}
-                  helperText="Add up to 5 tags to describe what your question is about"
-                  label="Tags"
-                />
+                <Box mb={2}>
+                  <TextField
+                    id="standard-full-width"
+                    required
+                    label="Question"
+                    placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
+                    helperText="Be specific and imagine you’re asking a question to another person"
+                    fullWidth
+                    margin="normal"
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                </Box>
+                <Box mb={4}>
+                  <FormControl fullWidth>
+                    <InputLabel shrink={true} required>
+                      Details
+                    </InputLabel>
+                    <Box mt={2}>
+                      <CKEditor
+                        editor={ClassicEditor}
+                        data="<p>Include all the information someone would need to answer your question</p>"
+                        onInit={(editor) => {
+                          console.log("Editor is ready to use!", editor);
+                        }}
+                        onChange={(event, editor) => {
+                          const data = editor.getData();
+                          console.log({ event, editor, data });
+                        }}
+                        onBlur={(event, editor) => {
+                          console.log("Blur.", editor);
+                        }}
+                        onFocus={(event, editor) => {
+                          console.log("Focus.", editor);
+                        }}
+                      />
+                    </Box>
+                  </FormControl>
+                </Box>
+
+                <Box mb={5}>
+                  <ChipInput
+                    defaultValue={["foo", "bar"]}
+                    fullWidth={true}
+                    helperText="Add up to 5 tags to describe what your question is about"
+                    label="Tags"
+                    required
+                  />
+                </Box>
                 <Button variant="contained" color="primary">
                   Ask question
                 </Button>
@@ -111,58 +128,62 @@ export default function Create() {
             </Card>
           </Grid>
           <Grid item xs={4}>
-            <Card className={classes.root}>
-              <CardContent>
-                <List
-                  component="nav"
-                  aria-label="main mailbox folders"
-                  subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
-                      Hot question
-                    </ListSubheader>
-                  }
-                >
-                  <ListItem button>
-                    <ListItemIcon>
-                      <QuestionAnswerIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Bootstrap Fixed Sidebar Causes Main" />
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemIcon>
-                      <QuestionAnswerIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Choosing Bootstrap Vs Material Design" />
-                  </ListItem>
-                </List>
-              </CardContent>
-            </Card>
-            <Card className={classes.root}>
-              <CardContent>
-                <List
-                  component="nav"
-                  aria-label="main mailbox folders"
-                  subheader={
-                    <ListSubheader component="div" id="nested-list-subheader">
-                      Hot question
-                    </ListSubheader>
-                  }
-                >
-                  <ListItem button>
-                    <ListItemIcon>
-                      <QuestionAnswerIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Bootstrap Fixed Sidebar Causes Main" />
-                  </ListItem>
-                  <ListItem button>
-                    <ListItemIcon>
-                      <QuestionAnswerIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Choosing Bootstrap Vs Material Design" />
-                  </ListItem>
-                </List>
-              </CardContent>
-            </Card>
+            <Box mb={4}>
+              <Card className={classes.root} elevation={3}>
+                <CardContent>
+                  <List
+                    component="nav"
+                    aria-label="main mailbox folders"
+                    subheader={
+                      <ListSubheader component="div" id="nested-list-subheader">
+                        Hot question
+                      </ListSubheader>
+                    }
+                  >
+                    <ListItem button>
+                      <ListItemIcon>
+                        <QuestionAnswerIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Bootstrap Fixed Sidebar Causes Main" />
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemIcon>
+                        <QuestionAnswerIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Choosing Bootstrap Vs Material Design" />
+                    </ListItem>
+                  </List>
+                </CardContent>
+              </Card>
+            </Box>
+            <Box>
+              <Card className={classes.root} elevation={3}>
+                <CardContent>
+                  <List
+                    component="nav"
+                    aria-label="main mailbox folders"
+                    subheader={
+                      <ListSubheader component="div" id="nested-list-subheader">
+                        Hot question
+                      </ListSubheader>
+                    }
+                  >
+                    <ListItem button>
+                      <ListItemIcon>
+                        <QuestionAnswerIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Bootstrap Fixed Sidebar Causes Main" />
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemIcon>
+                        <QuestionAnswerIcon />
+                      </ListItemIcon>
+                      <ListItemText primary="Choosing Bootstrap Vs Material Design" />
+                    </ListItem>
+                  </List>
+                </CardContent>
+              </Card>
+            </Box>
           </Grid>
         </Grid>
       </Container>
