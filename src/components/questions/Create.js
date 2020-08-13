@@ -28,6 +28,7 @@ import InboxIcon from "@material-ui/icons/Inbox";
 import DraftsIcon from "@material-ui/icons/Drafts";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
+import { useFormik } from "formik";
 
 export default function Create() {
   const theme = {
@@ -61,6 +62,17 @@ export default function Create() {
     },
   }));
   const classes = useStyles();
+  const formik = useFormik({
+    initialValues: {
+      title: "Question title",
+      body: "",
+      tags: ["foo", "bar"],
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+  console.log(formik.values);
   return (
     <div>
       <Navbar />
@@ -71,59 +83,66 @@ export default function Create() {
           <Grid item xs={8}>
             <Card className={classes.root} elevation={3}>
               <CardContent>
-                <Box mb={2}>
-                  <TextField
-                    id="standard-full-width"
-                    required
-                    label="Question"
-                    placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
-                    helperText="Be specific and imagine you’re asking a question to another person"
-                    fullWidth
-                    margin="normal"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </Box>
-                <Box mb={4}>
-                  <FormControl fullWidth>
-                    <InputLabel shrink={true} required>
-                      Details
-                    </InputLabel>
-                    <Box mt={2}>
-                      <CKEditor
-                        editor={ClassicEditor}
-                        data="<p>Include all the information someone would need to answer your question</p>"
-                        onInit={(editor) => {
-                          console.log("Editor is ready to use!", editor);
-                        }}
-                        onChange={(event, editor) => {
-                          const data = editor.getData();
-                          console.log({ event, editor, data });
-                        }}
-                        onBlur={(event, editor) => {
-                          console.log("Blur.", editor);
-                        }}
-                        onFocus={(event, editor) => {
-                          console.log("Focus.", editor);
-                        }}
-                      />
-                    </Box>
-                  </FormControl>
-                </Box>
+                <form onSubmit={formik.handleSubmit}>
+                  <Box mb={2}>
+                    <TextField
+                      id="standard-full-width"
+                      required={true}
+                      label="Question"
+                      placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
+                      helperText="Be specific and imagine you’re asking a question to another person"
+                      fullWidth={true}
+                      margin="normal"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      onChange={formik.handleChange}
+                      value={formik.values.title}
+                    />
+                  </Box>
+                  <Box mb={4}>
+                    <FormControl fullWidth>
+                      <InputLabel shrink={true} required>
+                        Details
+                      </InputLabel>
+                      <Box mt={2}>
+                        <CKEditor
+                          editor={ClassicEditor}
+                          data={formik.values.body}
+                          onInit={(editor) => {
+                            console.log("Editor is ready to use!", editor);
+                          }}
+                          onChange={(event, editor) => {
+                            const data = editor.getData();
+                            console.log({ event, editor, data });
+                          }}
+                          onBlur={(event, editor) => {
+                            console.log("Blur.", editor);
+                          }}
+                          onFocus={(event, editor) => {
+                            console.log("Focus.", editor);
+                          }}
+                          onChange={formik.handleChange}
+                          value={formik.values.body}
+                        />
+                      </Box>
+                    </FormControl>
+                  </Box>
 
-                <Box mb={5}>
-                  <ChipInput
-                    defaultValue={["foo", "bar"]}
-                    fullWidth={true}
-                    helperText="Add up to 5 tags to describe what your question is about"
-                    label="Tags"
-                    required
-                  />
-                </Box>
-                <Button variant="contained" color="primary">
-                  Ask question
-                </Button>
+                  <Box mb={5}>
+                    <ChipInput
+                      fullWidth={true}
+                      helperText="Add up to 5 tags to describe what your question is about"
+                      label="Tags"
+                      required
+                      onChange={formik.handleChange}
+                      value={formik.values.tags}
+                    />
+                  </Box>
+                  <Button variant="contained" color="primary" type="submit">
+                    Ask question
+                  </Button>
+                </form>
               </CardContent>
             </Card>
           </Grid>
