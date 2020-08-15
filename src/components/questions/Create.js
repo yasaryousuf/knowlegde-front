@@ -1,39 +1,30 @@
-import React, { Component } from "react";
+import React from "react";
 import {
-  Typography,
   FormControl,
   InputLabel,
-  Input,
-  FormHelperText,
   Container,
   Grid,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  TextField,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
 } from "@material-ui/core";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import ChipInput from "material-ui-chip-input";
 import Navbar from "../nav/Navbar";
 import Breadcrumb from "../nav/Breadcrumb";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Divider from "@material-ui/core/Divider";
-import InboxIcon from "@material-ui/icons/Inbox";
-import DraftsIcon from "@material-ui/icons/Drafts";
-import ListSubheader from "@material-ui/core/ListSubheader";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import { useFormik } from "formik";
 
 export default function Create() {
-  const theme = {
-    spacing: 8,
-  };
   const useStyles = makeStyles((theme) => ({
     icon: {
       marginRight: theme.spacing(0.5),
@@ -64,15 +55,15 @@ export default function Create() {
   const classes = useStyles();
   const formik = useFormik({
     initialValues: {
-      title: "Question title",
+      title: "",
       body: "",
       tags: ["foo", "bar"],
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: (values, actions) => {
+      console.log(actions);
     },
   });
-  console.log(formik.values);
+  console.log(formik.handleChange);
   return (
     <div>
       <Navbar />
@@ -87,6 +78,8 @@ export default function Create() {
                   <Box mb={2}>
                     <TextField
                       id="standard-full-width"
+                      onChange={formik.handleChange}
+                      defaultValue={formik.values.title}
                       required={true}
                       label="Question"
                       placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
@@ -96,8 +89,6 @@ export default function Create() {
                       InputLabelProps={{
                         shrink: true,
                       }}
-                      onChange={formik.handleChange}
-                      value={formik.values.title}
                     />
                   </Box>
                   <Box mb={4}>
@@ -122,8 +113,8 @@ export default function Create() {
                           onFocus={(event, editor) => {
                             console.log("Focus.", editor);
                           }}
-                          onChange={formik.handleChange}
-                          value={formik.values.body}
+                          // onChange={formik.handleChange}
+                          defaultValue={formik.values.body}
                         />
                       </Box>
                     </FormControl>
