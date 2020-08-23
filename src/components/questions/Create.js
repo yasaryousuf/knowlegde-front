@@ -14,17 +14,19 @@ import {
   ListItemIcon,
   ListItemText,
   ListSubheader,
+  FormHelperText,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import CKEditor from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import ChipInput from "material-ui-chip-input";
 import Navbar from "../nav/Navbar";
 import Breadcrumb from "../nav/Breadcrumb";
 import QuestionAnswerIcon from "@material-ui/icons/QuestionAnswer";
 import { useFormik } from "formik";
+import CKEditor from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import * as Yup from "yup";
 
-export default function Create() {
+function Create() {
   const useStyles = makeStyles((theme) => ({
     icon: {
       marginRight: theme.spacing(0.5),
@@ -53,17 +55,30 @@ export default function Create() {
     },
   }));
   const classes = useStyles();
+  const validationSchema = Yup.object({
+    title: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
+    body: Yup.string()
+      .min(2, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Required"),
+    tags: Yup.array().of(Yup.string().min(2)).required("Required").min(5),
+  });
   const formik = useFormik({
     initialValues: {
       title: "",
-      body: "",
+      body: "<p>Hello from CKEditor 5!</p>",
       tags: ["foo", "bar"],
     },
+    validationSchema,
     onSubmit: (values, actions) => {
       console.log(actions);
+      console.log(values);
     },
   });
-  console.log(formik.handleChange);
+
   return (
     <div>
       <Navbar />
@@ -77,19 +92,22 @@ export default function Create() {
                 <form onSubmit={formik.handleSubmit}>
                   <Box mb={2}>
                     <TextField
-                      id="standard-full-width"
+                      name="title"
                       onChange={formik.handleChange}
                       defaultValue={formik.values.title}
-                      required={true}
                       label="Question"
                       placeholder="e.g. Is there an R function for finding the index of an element in a vector?"
-                      helperText="Be specific and imagine you’re asking a question to another person"
                       fullWidth={true}
                       margin="normal"
                       InputLabelProps={{
                         shrink: true,
                       }}
                     />
+                    <FormHelperText error={formik.errors.title ? true : false}>
+                      {formik.errors.title
+                        ? formik.errors.title
+                        : "Be specific and imagine you’re asking a question to another person"}
+                    </FormHelperText>
                   </Box>
                   <Box mb={4}>
                     <FormControl fullWidth>
@@ -100,22 +118,13 @@ export default function Create() {
                         <CKEditor
                           editor={ClassicEditor}
                           data={formik.values.body}
-                          onInit={(editor) => {
-                            console.log("Editor is ready to use!", editor);
-                          }}
                           onChange={(event, editor) => {
-                            const data = editor.getData();
-                            console.log({ event, editor, data });
+                            formik.setFieldValue("body", editor.getData());
                           }}
-                          onBlur={(event, editor) => {
-                            console.log("Blur.", editor);
-                          }}
-                          onFocus={(event, editor) => {
-                            console.log("Focus.", editor);
-                          }}
-                          // onChange={formik.handleChange}
-                          defaultValue={formik.values.body}
                         />
+                        <FormHelperText error>
+                          {formik.errors.body ? formik.errors.body : null}
+                        </FormHelperText>
                       </Box>
                     </FormControl>
                   </Box>
@@ -123,12 +132,33 @@ export default function Create() {
                   <Box mb={5}>
                     <ChipInput
                       fullWidth={true}
-                      helperText="Add up to 5 tags to describe what your question is about"
                       label="Tags"
-                      required
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        formik.setFieldValue("tags", [
+                          ...formik.values.tags,
+                          e,
+                        ]);
+                      }}
+                      onAdd={(e) => {
+                        formik.setFieldValue("tags", [
+                          ...formik.values.tags,
+                          e,
+                        ]);
+                      }}
+                      onDelete={(e) => {
+                        console.log(e);
+                        formik.setFieldValue(
+                          "tags",
+                          formik.values.tags.filter((item) => item !== e)
+                        );
+                      }}
                       value={formik.values.tags}
                     />
+                    <FormHelperText error={formik.errors.tags ? true : false}>
+                      {formik.errors.tags
+                        ? formik.errors.tags
+                        : "Add up to 5 tags to describe what your question is about"}
+                    </FormHelperText>
                   </Box>
                   <Button variant="contained" color="primary" type="submit">
                     Ask question
@@ -200,3 +230,4 @@ export default function Create() {
     </div>
   );
 }
+export default Create;
