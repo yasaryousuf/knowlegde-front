@@ -25,8 +25,9 @@ import { useFormik } from "formik";
 import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import * as Yup from "yup";
+import { connect } from "react-redux";
 
-function Create() {
+function Create(props) {
   const useStyles = makeStyles((theme) => ({
     icon: {
       marginRight: theme.spacing(0.5),
@@ -64,21 +65,17 @@ function Create() {
       .min(2, "Too Short!")
       .max(50, "Too Long!")
       .required("Required"),
-    tags: Yup.array().of(Yup.string().min(2)).required("Required").min(5),
+    tags: Yup.array().of(Yup.string().min(2)).required("Required").min(2),
   });
   const formik = useFormik({
-    initialValues: {
-      title: "",
-      body: "<p>Hello from CKEditor 5!</p>",
-      tags: ["foo", "bar"],
-    },
+    initialValues: props.newQuestion,
     validationSchema,
     onSubmit: (values, actions) => {
-      console.log(actions);
-      console.log(values);
+      props.saveQuestion(values);
     },
   });
 
+  console.log(props);
   return (
     <div>
       <Navbar />
@@ -146,7 +143,6 @@ function Create() {
                         ]);
                       }}
                       onDelete={(e) => {
-                        console.log(e);
                         formik.setFieldValue(
                           "tags",
                           formik.values.tags.filter((item) => item !== e)
@@ -230,4 +226,22 @@ function Create() {
     </div>
   );
 }
-export default Create;
+
+const mapStateToProps = (state) => {
+  return {
+    newQuestion: state.newQuestion,
+    questions: state.questions,
+  };
+};
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveQuestion: (question) => {
+      dispatch({
+        type: "CREATE_QUESTION",
+        question: question,
+      });
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Create);
