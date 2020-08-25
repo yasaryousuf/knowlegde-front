@@ -26,6 +26,7 @@ import CKEditor from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import * as Yup from "yup";
 import { connect } from "react-redux";
+import ListItemLink from "../sidebar/ListItemLink";
 
 function Create(props) {
   const useStyles = makeStyles((theme) => ({
@@ -37,7 +38,6 @@ function Create(props) {
     root: {
       minWidth: 275,
       flexGrow: 1,
-      padding: "20px",
     },
     bullet: {
       display: "inline-block",
@@ -168,6 +168,7 @@ function Create(props) {
               <Card className={classes.root} elevation={3}>
                 <CardContent>
                   <List
+                    dense={true}
                     component="nav"
                     aria-label="main mailbox folders"
                     subheader={
@@ -176,13 +177,18 @@ function Create(props) {
                       </ListSubheader>
                     }
                   >
-                    <ListItem button>
+                    <ListItemLink
+                      to={"/"}
+                      primary="Hello world"
+                      icon={<QuestionAnswerIcon />}
+                    />
+                    <ListItem button component="a">
                       <ListItemIcon>
                         <QuestionAnswerIcon />
                       </ListItemIcon>
                       <ListItemText primary="Bootstrap Fixed Sidebar Causes Main" />
                     </ListItem>
-                    <ListItem button>
+                    <ListItem button component="a">
                       <ListItemIcon>
                         <QuestionAnswerIcon />
                       </ListItemIcon>
@@ -196,6 +202,7 @@ function Create(props) {
               <Card className={classes.root} elevation={3}>
                 <CardContent>
                   <List
+                    dense={true}
                     component="nav"
                     aria-label="main mailbox folders"
                     subheader={
