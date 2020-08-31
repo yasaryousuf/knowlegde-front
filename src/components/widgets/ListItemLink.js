@@ -17,7 +17,7 @@ export default function ListItemLink(props) {
     <li>
       <ListItem button component={CustomLink}>
         <ListItemIcon>{icon}</ListItemIcon>
-        <ListItemText primary={primary} />
+        <ListItemText primary={primary} secondary={primary} />
       </ListItem>
     </li>
   );
